@@ -1,4 +1,4 @@
-package main
+package database
 
 import (
 	"context"
@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
+	"github.com/Geshdo/the-maze-go-martin/types"
 	"github.com/google/uuid"
 	"google.golang.org/api/iterator"
 )
@@ -24,7 +25,7 @@ func createFirestoreClient() *firestore.Client {
 	return client
 }
 
-func addMovie(data AddMovieRequest) error {
+func AddMovie(data types.AddMovieRequest) error {
 	ctx := context.Background()
 	
 	client := createFirestoreClient()
@@ -50,7 +51,7 @@ func addMovie(data AddMovieRequest) error {
 	return err
 }
 
-func editMovie(data EditMovieRequest) error {
+func EditMovie(data types.EditMovieRequest) error {
 	ctx := context.Background()
 	
 	client := createFirestoreClient()
@@ -94,7 +95,7 @@ func editMovie(data EditMovieRequest) error {
 	return nil
 }
 
-func deleteMovie(movieId string) error {
+func DeleteMovie(movieId string) error {
 	ctx := context.Background()
 	
 	client := createFirestoreClient()
@@ -117,12 +118,13 @@ func deleteMovie(movieId string) error {
 	return nil
 }
 
-func getAllMovies() []map[string]interface{} {
+func GetAllMovies() []map[string]interface{} {
 	var res []map[string]interface{}
 	ctx := context.Background()
 
 	client := createFirestoreClient()
 	defer client.Close()
+	var avgRating float64
 
 	iter := client.Collection("movies").Documents(ctx)
 	for {
@@ -140,8 +142,41 @@ func getAllMovies() []map[string]interface{} {
 	for _, movie := range res {
 		rating := movie["rating"].(int64)
 		count := movie["count"].(int64)
-		avgRating := rating / count
-		movie["avg_rating"] = avgRating		
+		avgRating = float64(rating) / float64(count)
+		// round to 1 decimal
+		movie["avg_rating"] = float64(int(avgRating * 10)) / 10	
 	}
 	return res
+}
+
+func UpdateMovieRating(data types.UpdateRatingRequest) error {
+	ctx := context.Background()
+	
+	client := createFirestoreClient()
+	defer client.Close()
+
+	iter := client.Collection("movies").Where("id", "==", data.Id).Documents(ctx)
+	for {
+			doc, err := iter.Next()
+			if err == iterator.Done {
+					break
+			}
+			if err != nil {
+					return err
+			}
+			_, err = doc.Ref.Update(ctx, []firestore.Update{
+				{
+					Path: "rating",
+					Value: firestore.Increment(data.Rating),
+				},
+				{
+					Path: "count",
+					Value: firestore.Increment(1),
+				},
+			})
+			if err != nil {
+				return err
+			}
+	}
+	return nil
 }
