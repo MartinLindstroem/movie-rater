@@ -17,15 +17,15 @@ const App = () => {
   const [loggedInUser, setLoggedInUser] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const incrementPageViews = async () => {
-    const date = new Date();
-    const data = {
-      path: window.location.pathname,
-      userAgent: window.navigator.userAgent,
-      date: date,
-    };
-    await helperFunctions.pageViews(data);
-  };
+  // const incrementPageViews = async () => {
+  //   const date = new Date();
+  //   const data = {
+  //     path: window.location.pathname,
+  //     userAgent: window.navigator.userAgent,
+  //     date: date,
+  //   };
+  //   await helperFunctions.pageViews(data);
+  // };
 
   const login = (user) => {
     setLoggedInUser(user);
@@ -46,19 +46,19 @@ const App = () => {
         <Route
           exact
           path="/"
-          element={<MainPage incrementPageViews={incrementPageViews} />}
+          element={<MainPage /*incrementPageViews={incrementPageViews}*/ />}
         />
         <Route
           exact
           path="/login"
           element={
-            <Login login={login} incrementPageViews={incrementPageViews} />
+            <Login login={login} /*incrementPageViews={incrementPageViews}*/ />
           }
         />
         <Route
           exact
           path="/register"
-          element={<Register incrementPageViews={incrementPageViews} />}
+          element={<Register /*incrementPageViews={incrementPageViews}*/ />}
         />
         <Route element={<ProtectedRoute isAuth={isAuthenticated} />}>
           <Route
@@ -66,7 +66,7 @@ const App = () => {
             path="/admin"
             element={
               <AdminPage
-                incrementPageViews={incrementPageViews}
+                /*incrementPageViews={incrementPageViews}*/
                 logout={logout}
               />
             }

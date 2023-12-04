@@ -145,7 +145,7 @@ const AdminMovieTable = ({ movies, onUpdate, onDelete, toggleForm }) => {
                   </div>
                 </td>
                 <td className="td-center td-created">
-                  {new Date(item.created * 1000).toISOString().slice(0, 10)}
+                  {item.created.slice(0, 10)}
                 </td>
                 <td className="td-edit">
                   <div className="icon-container">

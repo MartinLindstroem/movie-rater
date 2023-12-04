@@ -35,7 +35,7 @@ const Header = ({ user, logout }) => {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar>{user.username[0]}</Avatar>
+              <Avatar>{user.email[0]}</Avatar>
             </IconButton>
 
             <Menu
@@ -74,7 +74,7 @@ const Header = ({ user, logout }) => {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               <MenuItem>
-                <Avatar /> {user.username}
+                <Avatar /> {user.email}
               </MenuItem>
               <MenuItem>
                 <Email sx={{ color: "#BDBDBD", marginRight: 1.5 }} />{" "}

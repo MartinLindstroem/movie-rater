@@ -14,9 +14,9 @@ const Login = ({ login, incrementPageViews }) => {
   const [statusMessage, setStatusMessage] = useState("");
   const [severity, setSeverity] = useState("");
 
-  useEffect(() => {
-    incrementPageViews();
-  }, []);
+  // useEffect(() => {
+  //   incrementPageViews();
+  // }, []);
 
   const onClick = async () => {
     if (email === "" || password === "") {
@@ -32,7 +32,7 @@ const Login = ({ login, incrementPageViews }) => {
       } else {
         setSeverity("success");
         setStatusMessage("Successfully logged in!");
-        login({ username: msg.username, email: msg.email });
+        login({ email: msg.email });
         setHelperText("");
         setEmail("");
         setPassword("");
@@ -58,7 +58,7 @@ const Login = ({ login, incrementPageViews }) => {
             value={email}
             required={true}
             helperText={email ? "" : helperText}
-            error={email ? "" : helperText}
+            error={helperText.length > 0}
             onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
@@ -72,7 +72,7 @@ const Login = ({ login, incrementPageViews }) => {
             value={password}
             required={true}
             helperText={password ? "" : helperText}
-            error={password ? "" : helperText}
+            error={helperText.length > 0}
             onChange={(e) => setPassword(e.target.value)}
           />
           <br />

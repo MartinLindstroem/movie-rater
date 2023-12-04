@@ -75,70 +75,70 @@ export const helperFunctions = {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success: ", data);
+        console.log("msg: ", data);
       })
       .catch((error) => {
         console.error("Error: ", error);
       });
   },
-  // // Register a new user
-  // registerUser: async (user) => {
-  //   const data = {
-  //     email: user.email,
-  //     username: user.username,
-  //     password: user.password,
-  //   };
+  // Register a new user
+  registerUser: async (user) => {
+    const data = {
+      email: user.email,
+      password: user.password,
+    };
 
-  //   return await fetch(`${url}/register`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("Success: ", data);
-  //       return data;
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error: ", error);
-  //     });
-  // },
-  // // Log in user
-  // login: async (user) => {
-  //   const data = {
-  //     email: user.email,
-  //     password: user.password,
-  //   };
+    return await fetch(`${url}/users/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success: ", data);
+        return data;
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  },
+  // Log in user
+  login: async (user) => {
+    const data = {
+      email: user.email,
+      password: user.password,
+    };
 
-  //   return await fetch(`${url}/login`, {
-  //     method: "POST",
-  //     credentials: "include",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       // if (data.username && data.email) {
-  //       //   localStorage.setItem("user", data.username);
-  //       //   localStorage.setItem("isAuthenticated", true);
-  //       // }
-  //       return data;
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error: ", error);
-  //     });
-  // },
-  // // Log out user. Removes cookie with token
-  // logout: async () => {
-  //   return await fetch(`${url}/logout`, {
-  //     method: "GET",
-  //     credentials: "include",
-  //   }).then((response) => response.json());
-  // },
+    return await fetch(`${url}/users/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        // if (data.email) {
+        //   localStorage.setItem("user", data.email);
+        //   localStorage.setItem("isAuthenticated", true);
+        // }
+        return data;
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  },
+  // Log out user. Removes cookie with token
+  logout: async () => {
+    return await fetch(`${url}/users/logout`, {
+      method: "POST",
+      credentials: "include",
+    }).then((response) => response.json());
+  },
   // admin: async () => {
   //   return await fetch(`${url}/admin`, {
   //     method: "GET",

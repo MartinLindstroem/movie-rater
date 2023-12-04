@@ -93,7 +93,10 @@ const EditMovieForm = ({ onEdit, toggleForm, movieProps }) => {
             <InputLabel required sx={{ marginTop: 2 }}>
               Rating
             </InputLabel>
-            <Rating max={10} onChange={(e) => setRating(e.target.value)} />
+            <Rating
+              max={10}
+              onChange={(e) => setRating(parseInt(e.target.value))}
+            />
             <br />
             <TextField
               InputProps={{ inputProps: { min: 0 } }}
@@ -104,7 +107,7 @@ const EditMovieForm = ({ onEdit, toggleForm, movieProps }) => {
               label="Number of ratings"
               type="number"
               defaultValue={movieProps.count}
-              onChange={(e) => setCount(e.target.value)}
+              onChange={(e) => setCount(parseInt(e.target.value))}
             />
           </DialogContent>
           <DialogActions>

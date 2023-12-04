@@ -13,24 +13,22 @@ import { helperFunctions } from "../helpers/functions";
 
 const Register = ({ incrementPageViews }) => {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [helperText, setHelperText] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [severity, setSeverity] = useState("");
 
-  useEffect(() => {
-    incrementPageViews();
-  }, []);
+  // useEffect(() => {
+  //   incrementPageViews();
+  // }, []);
 
   const onClick = async () => {
-    if (email === "" || username === "" || password === "") {
+    if (email === "" || password === "") {
       setHelperText("Please fill out the required fields");
     } else {
       const msg = await helperFunctions.registerUser({
         email,
-        username,
         password,
       });
       if (!msg.success) {
@@ -41,7 +39,6 @@ const Register = ({ incrementPageViews }) => {
         setStatusMessage(msg.success);
         setHelperText("");
         setEmail("");
-        setUsername("");
         setPassword("");
       }
       setShowAlert(true);
@@ -67,21 +64,6 @@ const Register = ({ incrementPageViews }) => {
             helperText={email ? "" : helperText}
             error={email ? "" : helperText}
             onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            // autoFocus
-            margin="dense"
-            id="username"
-            label="Username"
-            type="text"
-            fullWidth
-            variant="standard"
-            autoComplete="off"
-            value={username}
-            required={true}
-            helperText={username ? "" : helperText}
-            error={username ? "" : helperText}
-            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             margin="dense"

@@ -22,9 +22,9 @@ function AdminPage({ logout, incrementPageViews }) {
     getMovies();
   }, []);
 
-  useEffect(() => {
-    incrementPageViews();
-  }, []);
+  // useEffect(() => {
+  //   incrementPageViews();
+  // }, []);
 
   const toggleForm = (id, title, imdb, image, rating, count) => {
     const movie = { id, title, imdb, image, rating, count };
@@ -36,7 +36,7 @@ function AdminPage({ logout, incrementPageViews }) {
   const editMovie = async (movie) => {
     const res = await helperFunctions.editMovie(movie);
 
-    if ("err" in res) {
+    if (!res.includes("success")) {
       logout();
       alert("Your session expired. Please log in again");
     }
@@ -66,7 +66,7 @@ function AdminPage({ logout, incrementPageViews }) {
 
   const deleteMovie = async (id) => {
     const res = await helperFunctions.deleteMovie(id);
-    if ("err" in res) {
+    if (!res.includes("success")) {
       logout();
       alert("Your session expired. Please log in again");
     }
