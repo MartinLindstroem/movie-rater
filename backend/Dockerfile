@@ -3,6 +3,8 @@ FROM golang:1.19
 # Set destination for COPY
 WORKDIR /app
 
+ENV GO111MODULE=on 
+
 # Download Go modules
 COPY go.mod go.sum ./
 RUN go mod download
