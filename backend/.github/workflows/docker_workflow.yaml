@@ -1,0 +1,31 @@
+name: Build and push image to artifact registry
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-image:
+    runs-on: ubuntu-latest
+    steps:
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          token_format: "access_token"
+          workload_identity_provider: ${{ sercrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - name: code checkout
+        uses: actions/checkout@v4
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+
+      - name: Build and push the docker image
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        run: |
+          gcloud auth configure-docker europe-north1-docker.pkg.dev
+          docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest .
+          docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
