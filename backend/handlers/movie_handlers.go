@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/Geshdo/the-maze-go-martin/helpers"
+	"github.com/Geshdo/the-maze-go-martin/internal/auth"
 	"github.com/Geshdo/the-maze-go-martin/internal/database"
 	"github.com/Geshdo/the-maze-go-martin/types"
 )
@@ -47,20 +47,11 @@ func AddMovieHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteMovieHandler(w http.ResponseWriter, r *http.Request) {
-	c, err := r.Cookie("token")
+	msg, code, err := auth.AuthorizeUser(r)
 	if err != nil {
-		if err == http.ErrNoCookie {
-			helpers.RespondWithError(w, http.StatusUnauthorized, "Unauthorized")
-			return
-		}
-
-		helpers.RespondWithError(w, http.StatusBadRequest, "An error occured")
+		helpers.RespondWithError(w, code, msg)
+		return
 	}
-
-	tokenString := c.Value
-	fmt.Println(tokenString)
-
-	// token, err := auth.VerifyJwtToken(tokenString)
 
 	var data types.DeleteMovieRequest
 	err = json.NewDecoder(r.Body).Decode(&data)
@@ -83,8 +74,14 @@ func DeleteMovieHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditMovieHandler(w http.ResponseWriter, r *http.Request) {
+	msg, code, err := auth.AuthorizeUser(r)
+	if err != nil {
+		helpers.RespondWithError(w, code, msg)
+		return
+	}
+
 	var data types.EditMovieRequest
-	err := json.NewDecoder(r.Body).Decode(&data)
+	err = json.NewDecoder(r.Body).Decode(&data)
 	
 	if err != nil {
 		helpers.RespondWithError(w, http.StatusBadRequest, "Error decoding JSON")
