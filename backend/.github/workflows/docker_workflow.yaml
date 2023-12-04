@@ -13,6 +13,13 @@ jobs:
         working-directory: backend
 
     steps:
+    - name: Debug Information
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Contents of the directory: $(ls -a)"
+        echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+        echo "GitHub Ref: $GITHUB_REF"
+
       - id: "auth"
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v2"
