@@ -77,9 +77,25 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie {
 		Name: "token",
 		Value: tokenString,
+		Path: "/",
 		Expires: time.Now().Add(time.Minute * 30),
-		// HttpOnly: true,
+		HttpOnly: true,
 	})
 
-	helpers.RespondWithJSON(w, http.StatusOK, "Login successful")
+
+	helpers.RespondWithJSON(w, http.StatusOK, types.LoginResponse{
+		Msg: "Successful login",
+		Email: data.Email,
+	})
+}
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie {
+		Name: "token",
+		Value: "",
+		Path: "/",
+		MaxAge: -1,
+	})
+
+	helpers.RespondWithJSON(w, http.StatusOK, "Successful logout")
 }
