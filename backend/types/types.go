@@ -36,3 +36,8 @@ type Claims struct {
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
+
+type LoginResponse struct {
+	Msg string `json:"msg"`
+	Email string `json:"email"`
+}
