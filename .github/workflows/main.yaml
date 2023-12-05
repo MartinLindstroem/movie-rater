@@ -1,4 +1,4 @@
-name: Build and push image to artifact registry
+name: Build and push backend image to artifact registry
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - "backend/**"
 
 jobs:
-  deploy_image:
+  deploy_backend_image:
     permissions:
       contents: "read"
       id-token: "write"
