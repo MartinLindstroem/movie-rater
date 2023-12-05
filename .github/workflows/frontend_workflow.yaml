@@ -1,0 +1,47 @@
+name: Build and push frontend image to artifact registry
+
+on:
+  push:
+    paths:
+      - "frontend/**"
+
+jobs:
+  deploy_frontend_image:
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v4
+
+      - name: Debug Information
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Contents of the directory: $(ls -a)"
+          echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+          echo "GitHub Ref: $GITHUB_REF"
+
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          token_format: "access_token"
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+
+      - name: Build and push the docker image
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+        run: |
+          gcloud auth configure-docker europe-north1-docker.pkg.dev
+          docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/frontend:latest -f Dockerfile.prod .
+          docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/frontend:latest
