@@ -27,8 +27,6 @@ const App = () => {
   //   await helperFunctions.pageViews(data);
   // };
 
-  // test
-
   const login = (user) => {
     setLoggedInUser(user);
     setIsAuthenticated(true);
