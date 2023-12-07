@@ -51,6 +51,7 @@ jobs:
           gcloud auth configure-docker europe-north1-docker.pkg.dev
           docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest .
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
+          echo "ACCESS TOKEN BELOW!!"
           echo "$ACCESS_TOKEN"
   # Set up and deploy cloud run instance
   terraform_cloud_run:
