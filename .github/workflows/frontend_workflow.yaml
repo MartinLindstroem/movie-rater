@@ -2,8 +2,9 @@ name: Build and push frontend image to artifact registry
 
 on:
   push:
-    paths-ignore:
-      - "backend/**"
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontent_workflow.yaml"
 
 jobs:
   deploy_frontend_image:
