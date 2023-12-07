@@ -2,8 +2,8 @@ name: Build and push frontend image to artifact registry
 
 on:
   push:
-    paths:
-      - "frontend/**"
+    paths-ignore:
+      - "backend/**"
 
 jobs:
   deploy_frontend_image:

@@ -2,8 +2,8 @@ name: Build and push backend image to artifact registry
 
 on:
   push:
-    paths:
-      - "backend/**"
+    paths-ignore:
+      - "frontend/**"
 
 jobs:
   # Build and deploy docker image to Artifact Registry
