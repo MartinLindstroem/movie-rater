@@ -18,8 +18,8 @@ jobs:
       run:
         working-directory: ./backend
 
-    # outputs:
-    #   access_token: ${{ steps.auth.outputs.access_token }}
+    outputs:
+      access_token: ${{ steps.auth.outputs.access_token }}
 
     steps:
       - name: code checkout
@@ -52,7 +52,6 @@ jobs:
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
 
   # Set up and deploy cloud run instance
-  #test comment
   terraform_cloud_run:
     permissions:
       contents: "read"
@@ -79,7 +78,9 @@ jobs:
         run: terraform validate -no-color
 
       - name: Debug information
-        run:
+        env:
+          TF_VAR_oidcToken: ${{ needs.deploy_backend_image.outputs.access_token }}
+        run: echo "$TF_VAR_oidcToken"
 
       - name: Terraform Apply
         env:
