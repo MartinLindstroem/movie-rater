@@ -20,6 +20,7 @@ jobs:
 
     outputs:
       access_token: ${{ steps.token.outputs.access_token }}
+      test: ${{ steps.token.outputs.test }}
 
     steps:
       - name: code checkout
@@ -42,7 +43,9 @@ jobs:
 
       - id: "token"
         name: "Output access token to use in other job"
-        run: echo "access_token=${{ steps.auth.outputs.access_token }}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "access_token=${{ steps.auth.outputs.access_token }}" >> "$GITHUB_OUTPUT"
+          echo "test=test" >> "$GITHUB_OUTPUT"
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
@@ -90,8 +93,10 @@ jobs:
 
       - name: Terraform Apply
         env:
+          TEST: ${{ needs.deploy_backend_image.outputs.test }}
           TF_VAR_oidcToken: ${{ needs.deploy_backend_image.outputs.access_token }}
         run: |
           echo "Here comes the token"
           echo "$TF_VAR_oidcToken"
+          echo "$TEST"
           terraform apply
