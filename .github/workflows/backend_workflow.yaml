@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "backend/**"
-      - ".github/workflows/backend_workflows.yaml"
+      - ".github/workflows/backend_workflow.yaml"
 
 jobs:
   # Build and deploy docker image to Artifact Registry
