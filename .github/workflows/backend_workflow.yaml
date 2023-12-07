@@ -18,9 +18,9 @@ jobs:
       run:
         working-directory: ./backend
 
-    outputs:
-      access_token: ${{ steps.token.outputs.access_token }}
-      test: ${{ steps.token.outputs.test }}
+    # outputs:
+    #   access_token: ${{ steps.token.outputs.access_token }}
+    #   test: ${{ steps.token.outputs.test }}
 
     steps:
       - name: code checkout
@@ -41,11 +41,11 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-      - id: "token"
-        name: "Output access token to use in other job"
-        run: |
-          echo "access_token=${{ steps.auth.outputs.access_token }}" >> "$GITHUB_OUTPUT"
-          echo "test=test" >> "$GITHUB_OUTPUT"
+      # - id: "token"
+      #   name: "Output access token to use in other job"
+      #   run: |
+      #     echo "access_token=${{ steps.auth.outputs.access_token }}" >> "$GITHUB_OUTPUT"
+      #     echo "test=test" >> "$GITHUB_OUTPUT"
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
@@ -53,15 +53,11 @@ jobs:
       - name: Build and push the docker image
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
+          # ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
         run: |
           gcloud auth configure-docker europe-north1-docker.pkg.dev
           docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest .
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
-          echo "ACCESS TOKEN BELOW!!"
-          echo "$ACCESS_TOKEN"
-          echo "${{ steps.token.outputs.access_token }}"
-          echo ${{ steps.token.outputs.access_token }}
   # Set up and deploy cloud run instance
   terraform_cloud_run:
     permissions:
@@ -72,10 +68,18 @@ jobs:
     defaults:
       run:
         working-directory: ./backend/terraform
-    needs: deploy_backend_image
+    # needs: deploy_backend_image
     steps:
       - name: code checkout
         uses: actions/checkout@v4
+
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          token_format: "access_token"
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
       - name: "Set up terraform"
         uses: hashicorp/setup-terraform@v3
@@ -88,20 +92,7 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
-      - name: Debug information
-        env:
-          TEST: ${{ needs.deploy_backend_image.outputs.test }}
-          TF_VAR_oidcToken: ${{ needs.deploy_backend_image.outputs.access_token }}
-        run: |
-          echo "$TF_VAR_oidcToken"
-          echo "$TEST"
-
       - name: Terraform Apply
-        env:
-          TEST: ${{ needs.deploy_backend_image.outputs.test }}
-          TF_VAR_oidcToken: ${{ needs.deploy_backend_image.outputs.access_token }}
-        run: |
-          echo "Here comes the token"
-          echo "$TF_VAR_oidcToken"
-          echo "$TEST"
-          terraform apply
+        # env:
+        # TF_VAR_oidcToken: ${{ steps.auth.outputs.access_token }}
+        run: terraform apply

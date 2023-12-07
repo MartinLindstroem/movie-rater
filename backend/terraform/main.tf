@@ -10,7 +10,7 @@ terraform {
 provider "google" {
   project = var.projectId
   region = var.region
-  access_token = var.oidcToken
+  # access_token = var.oidcToken
 }
 
 # Create cloud run instance
