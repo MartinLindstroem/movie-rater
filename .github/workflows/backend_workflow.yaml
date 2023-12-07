@@ -92,5 +92,6 @@ jobs:
         env:
           TF_VAR_oidcToken: ${{ needs.deploy_backend_image.outputs.access_token }}
         run: |
+          echo "Here comes the token"
           echo "$TF_VAR_oidcToken"
           terraform apply
