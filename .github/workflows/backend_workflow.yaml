@@ -6,6 +6,7 @@ on:
       - "backend/**"
 
 jobs:
+  # Build and deploy docker image to Artifact Registry
   deploy_backend_image:
     permissions:
       contents: "read"
@@ -45,3 +46,42 @@ jobs:
           gcloud auth configure-docker europe-north1-docker.pkg.dev
           docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest .
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
+
+  # Set up and deploy cloud run instance
+  terraform_cloud_run:
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    runs-on: ubuntu-latest
+      defaults:
+        run:
+          working-directory: ./backend/terraform
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v4
+      
+      # - id: "auth"
+      #   name: "Authenticate to Google Cloud"
+      #   uses: "google-github-actions/auth@v2"
+      #   with:
+      #     token_format: "access_token"
+      #     workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+      #     service_account: ${{ secrets.SERVICE_ACCOUNT }}
+      #     export_default_credentials: true
+      
+      - name: "Set up terraform"
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+      
+      - name: Terraform Apply
+        env:
+          TF_VAR_oidcToken: ${{ needs.deploy_backend_image.auth.access_token }}
+        run: terraform apply
