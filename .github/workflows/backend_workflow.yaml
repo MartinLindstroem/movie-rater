@@ -60,6 +60,8 @@ jobs:
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
           echo "ACCESS TOKEN BELOW!!"
           echo "$ACCESS_TOKEN"
+          echo "${{ steps.token.outputs.access_token }}"
+          echo ${{ steps.token.outputs.access_token }}
   # Set up and deploy cloud run instance
   terraform_cloud_run:
     permissions:
