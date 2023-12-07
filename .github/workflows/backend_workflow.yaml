@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "backend/**"
-      # - ".github/workflows/backend_workflow.yaml"
+      - ".github/workflows/backend_workflow.yaml"
 
 jobs:
   # Build and deploy docker image to Artifact Registry
@@ -18,8 +18,8 @@ jobs:
       run:
         working-directory: ./backend
 
-    outputs:
-      access_token: ${{ steps.auth.outputs.access_token }}
+    # outputs:
+    #   access_token: ${{ steps.auth.outputs.access_token }}
 
     steps:
       - name: code checkout
