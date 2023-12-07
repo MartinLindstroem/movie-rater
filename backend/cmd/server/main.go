@@ -15,6 +15,7 @@ import (
 func main() {
 	godotenv.Load("./.env")
 	portString := os.Getenv("PORT")
+	// test
 
 	router := chi.NewRouter()
 
