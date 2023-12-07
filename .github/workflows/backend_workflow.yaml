@@ -52,6 +52,7 @@ jobs:
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
 
   # Set up and deploy cloud run instance
+  #test comment
   terraform_cloud_run:
     permissions:
       contents: "read"
