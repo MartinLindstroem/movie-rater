@@ -66,15 +66,6 @@ jobs:
       - name: code checkout
         uses: actions/checkout@v4
 
-      # - id: "auth"
-      #   name: "Authenticate to Google Cloud"
-      #   uses: "google-github-actions/auth@v2"
-      #   with:
-      #     token_format: "access_token"
-      #     workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-      #     service_account: ${{ secrets.SERVICE_ACCOUNT }}
-      #     export_default_credentials: true
-
       - name: "Set up terraform"
         uses: hashicorp/setup-terraform@v3
 
