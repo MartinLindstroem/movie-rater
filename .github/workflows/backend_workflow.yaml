@@ -88,8 +88,11 @@ jobs:
 
       - name: Debug information
         env:
+          TEST: ${{ needs.deploy_backend_image.outputs.test }}
           TF_VAR_oidcToken: ${{ needs.deploy_backend_image.outputs.access_token }}
-        run: echo "$TF_VAR_oidcToken"
+        run: |
+          echo "$TF_VAR_oidcToken"
+          echo "$TEST"
 
       - name: Terraform Apply
         env:
