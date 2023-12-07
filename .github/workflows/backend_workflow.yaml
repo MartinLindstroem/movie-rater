@@ -39,7 +39,6 @@ jobs:
           token_format: "access_token"
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
-          export_default_credentials: true
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
@@ -47,11 +46,12 @@ jobs:
       - name: Build and push the docker image
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
           gcloud auth configure-docker europe-north1-docker.pkg.dev
           docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest .
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
-
+          echo "$ACCESS_TOKEN"
   # Set up and deploy cloud run instance
   terraform_cloud_run:
     permissions:
