@@ -97,4 +97,4 @@ jobs:
       - name: Terraform Apply
         env:
           TF_LOG: "DEBUG"
-        run: terraform apply
+        run: terraform apply -auto-approve
