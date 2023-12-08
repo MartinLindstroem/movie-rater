@@ -90,7 +90,11 @@ jobs:
 
       - name: Terraform Validate
         id: validate
+        env:
+          TF_LOG: "DEBUG"
         run: terraform validate -no-color
 
       - name: Terraform Apply
+        env:
+          TF_LOG: "DEBUG"
         run: terraform apply
