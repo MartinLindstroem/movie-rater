@@ -5,6 +5,11 @@ terraform {
       version = "~>5.8.0"
     }
   }
+
+  backend "gcs" {
+    bucket = "the-maze-terraform-state-bucket"
+    prefix = "value"
+  }
 }
 
 provider "google" {
