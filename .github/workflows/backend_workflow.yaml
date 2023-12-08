@@ -68,7 +68,7 @@ jobs:
     defaults:
       run:
         working-directory: ./backend/terraform
-    # needs: deploy_backend_image
+    needs: deploy_backend_image
     steps:
       - name: code checkout
         uses: actions/checkout@v4
@@ -93,6 +93,4 @@ jobs:
         run: terraform validate -no-color
 
       - name: Terraform Apply
-        # env:
-        # TF_VAR_oidcToken: ${{ steps.auth.outputs.access_token }}
         run: terraform apply
