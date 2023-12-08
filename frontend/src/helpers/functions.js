@@ -1,5 +1,8 @@
 // const url = "https://the-maze-backend-jxbccvuzla-lz.a.run.app";
-const url = "http://localhost:8080/v1";
+let url = "http://localhost:8080/v1";
+if (process.env.ENVIRONMENT === "prod") {
+  url = "https://cloudrun-maze-backend-6opp6q3ena-lz.a.run.app/v1";
+}
 
 export const helperFunctions = {
   // Get all movies from the database
