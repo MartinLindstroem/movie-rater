@@ -13,7 +13,7 @@ terraform {
 }
 
 provider "google" {
-  project = var.projectId
+  project = var.projectID
   region = var.region
   # access_token = var.oidcToken
 }
@@ -29,7 +29,7 @@ resource "google_cloud_run_service" "run_service" {
         image = "europe-north1-docker.pkg.dev/the-maze-go/the-maze-go/backend:latest"
         env {
           name = "projectID"
-          value = var.projectId
+          value = var.projectID
         }
       }
     }
