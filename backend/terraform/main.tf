@@ -8,7 +8,7 @@ terraform {
 
   backend "gcs" {
     bucket = "the-maze-terraform-state-bucket"
-    prefix = "value"
+    prefix = "backend"
   }
 }
 
@@ -17,7 +17,7 @@ provider "google" {
   region = var.region
 }
 
-# Create cloud run instance
+# Create backend cloud run instance
 resource "google_cloud_run_service" "run_service" {
   name = "cloudrun-maze-backend"
   location = var.region

@@ -48,7 +48,7 @@ jobs:
           docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest .
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
   # Set up and deploy cloud run instance
-  terraform_cloud_run:
+  deploy_terraform_backend:
     permissions:
       contents: "read"
       id-token: "write"
@@ -79,8 +79,6 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        env:
-          TF_LOG: "DEBUG"
         run: terraform validate -no-color
 
       - name: Terraform Apply
