@@ -4,9 +4,10 @@ on:
   push:
     paths:
       - "frontend/**"
-      # - ".github/workflows/frontend_workflow.yaml"
+      - ".github/workflows/frontend_workflow.yaml"
 
 jobs:
+  # Build and deploy docker image to Artifact Registry
   deploy_frontend_image:
     permissions:
       contents: "read"
@@ -23,10 +24,10 @@ jobs:
 
       - name: Debug Information
         run: |
-          echo 'Current directory: $(pwd)'
-          echo 'Contents of the directory: $(ls -a)'
-          echo 'GitHub Event Name: $GITHUB_EVENT_NAME'
-          echo 'GitHub Ref: $GITHUB_REF'
+          echo "Current directory: $(pwd)"
+          echo "Contents of the directory: $(ls -a)"
+          echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+          echo "GitHub Ref: $GITHUB_REF"
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
@@ -46,3 +47,39 @@ jobs:
           gcloud auth configure-docker europe-north1-docker.pkg.dev
           docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/frontend:latest -f Dockerfile.prod .
           docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/frontend:latest
+
+  deploy_terraform_frontend:
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/terraform
+    needs: deploy_frontend_image
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v4
+
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          token_format: "access_token"
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - name: "Set up terraform"
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
