@@ -7,9 +7,3 @@ variable "projectID" {
 variable "region" {
     default = "europe-north1"
 }
-
-# variable "oidcToken" {
-#     type = string
-#     description = "OIDC token to authenticate with GCP"
-#     sensitive = true
-# }

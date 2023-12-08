@@ -18,10 +18,6 @@ jobs:
       run:
         working-directory: ./backend
 
-    # outputs:
-    #   access_token: ${{ steps.token.outputs.access_token }}
-    #   test: ${{ steps.token.outputs.test }}
-
     steps:
       - name: code checkout
         uses: actions/checkout@v4
@@ -41,19 +37,12 @@ jobs:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-      # - id: "token"
-      #   name: "Output access token to use in other job"
-      #   run: |
-      #     echo "access_token=${{ steps.auth.outputs.access_token }}" >> "$GITHUB_OUTPUT"
-      #     echo "test=test" >> "$GITHUB_OUTPUT"
-
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
 
       - name: Build and push the docker image
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          # ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
         run: |
           gcloud auth configure-docker europe-north1-docker.pkg.dev
           docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest .
@@ -96,6 +85,5 @@ jobs:
 
       - name: Terraform Apply
         env:
-          # TF_LOG: "DEBUG"
           TF_VAR_projectID: ${{ secrets.PROJECT_ID }}
         run: terraform apply -auto-approve
