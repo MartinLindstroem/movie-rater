@@ -30,10 +30,6 @@ resource "google_cloud_run_service" "run_service" {
           name = "PROJECT_ID"
           value = var.projectID
         }
-        env {
-          name = "ENVIRONMENT"
-          value = "prod"
-        }
       }
     }
   }
