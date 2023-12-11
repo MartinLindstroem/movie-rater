@@ -84,5 +84,5 @@ jobs:
       - name: Terraform Apply
         env:
           TF_VAR_projectID: ${{ secrets.PROJECT_ID }}
-          TF_VAR_github_sha: ${{ $GITHUB_SHA }}
+          TF_VAR_github_sha: ${{ github.sha }}
         run: terraform apply -auto-approve
