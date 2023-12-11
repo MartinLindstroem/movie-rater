@@ -36,8 +36,6 @@ const EditMovieForm = ({ onEdit, toggleForm, movieProps }) => {
     //   console.log("ERROR");
     // }
 
-    console.log(data);
-
     setHelperText("");
     setMovieId("");
     setTitle("");

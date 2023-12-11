@@ -36,9 +36,19 @@ function AdminPage({ logout, incrementPageViews }) {
   const editMovie = async (movie) => {
     const res = await helperFunctions.editMovie(movie);
 
-    if (!res.includes("success")) {
-      logout();
-      alert("Your session expired. Please log in again");
+    console.log("RESULT: ", res);
+
+    if (typeof res !== "string") {
+      alert(`Something went wrong: ${res.error}`);
+      return;
+    }
+
+    if (typeof res === "string") {
+      if (!res.includes("success")) {
+        logout();
+        alert("Your session expired. Please log in again");
+        return;
+      }
     }
 
     setTimeout(async () => {
@@ -66,9 +76,18 @@ function AdminPage({ logout, incrementPageViews }) {
 
   const deleteMovie = async (id) => {
     const res = await helperFunctions.deleteMovie(id);
-    if (!res.includes("success")) {
-      logout();
-      alert("Your session expired. Please log in again");
+
+    if (typeof res !== "string") {
+      alert(`Something went wrong: ${res.error}`);
+      return;
+    }
+
+    if (typeof res === "string") {
+      if (!res.includes("success")) {
+        logout();
+        alert("Your session expired. Please log in again");
+        return;
+      }
     }
 
     setTimeout(async () => {
