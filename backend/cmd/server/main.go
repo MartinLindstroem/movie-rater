@@ -20,7 +20,7 @@ func main() {
 	router := chi.NewRouter()
 
 	router.Use(cors.Handler(cors.Options {
-		AllowedOrigins: []string{"http://localhost:3000", "https://cloudrun-maze-frontend-6opp6q3ena-lz.a.run.app/"},
+		AllowedOrigins: []string{"http://localhost:3000", "https://cloudrun-maze-frontend-6opp6q3ena-lz.a.run.app"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders: []string{"*"},
 		ExposedHeaders: []string{"Link"},
