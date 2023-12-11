@@ -78,6 +78,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		Name: "token",
 		Value: tokenString,
 		Path: "/",
+		SameSite: http.SameSiteNoneMode,
+		Secure: true,
 		Expires: time.Now().Add(time.Minute * 30),
 		HttpOnly: true,
 	})
