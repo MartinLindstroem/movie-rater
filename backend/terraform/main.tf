@@ -25,7 +25,7 @@ resource "google_cloud_run_service" "run_service" {
   template {
     spec {
       containers {
-        image = "europe-north1-docker.pkg.dev/the-maze-go/the-maze-go/backend:latest"
+        image = "europe-north1-docker.pkg.dev/the-maze-go/the-maze-go/backend:${var.github_sha}"
         env {
           name = "PROJECT_ID"
           value = var.projectID

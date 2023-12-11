@@ -45,8 +45,8 @@ jobs:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
           gcloud auth configure-docker europe-north1-docker.pkg.dev
-          docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest .
-          docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:latest
+          docker build -t europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:$GITHUB_SHA .
+          docker push europe-north1-docker.pkg.dev/$PROJECT_ID/the-maze-go/backend:$GITHUB_SHA
   # Set up and deploy cloud run instance
   deploy_terraform_backend:
     permissions:
@@ -84,4 +84,5 @@ jobs:
       - name: Terraform Apply
         env:
           TF_VAR_projectID: ${{ secrets.PROJECT_ID }}
+          TF_VAR_github_sha: $GITHUB_SHA
         run: terraform apply -auto-approve

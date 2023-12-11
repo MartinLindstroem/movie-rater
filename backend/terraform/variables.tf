@@ -7,3 +7,9 @@ variable "projectID" {
 variable "region" {
     default = "europe-north1"
 }
+
+variable "github_sha" {
+    type = string
+    description = "github sha for image tag"
+    sensitive = true
+}
