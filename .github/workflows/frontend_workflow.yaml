@@ -82,4 +82,6 @@ jobs:
         run: terraform validate -no-color
 
       - name: Terraform Apply
+        env:
+          TF_VAR_projectID: ${{ secrets.PROJECT_ID }}
         run: terraform apply -auto-approve

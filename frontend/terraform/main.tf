@@ -27,6 +27,10 @@ resource "google_cloud_run_service" "run_service" {
       containers {
         image = "europe-north1-docker.pkg.dev/the-maze-go/the-maze-go/frontend:latest"
         env {
+          name = PROJECT_ID
+          value = var.projectID
+        }
+        env {
           name = "ENVIRONMENT"
           value = "prod"
         }
