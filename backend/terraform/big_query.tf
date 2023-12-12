@@ -14,7 +14,7 @@ resource "google_pubsub_subscription" "movies" {
     table = "${google_bigquery_table.movies.project}.${google_bigquery_table.movies.dataset_id}.${google_bigquery_table.movies.table_id}"
   }
 
-#   depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
+  depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
 }
 
 resource "google_pubsub_subscription" "pageviews" {
@@ -25,7 +25,22 @@ resource "google_pubsub_subscription" "pageviews" {
     table = "${google_bigquery_table.pageviews.project}.${google_bigquery_table.pageviews.dataset_id}.${google_bigquery_table.pageviews.table_id}"
   }
 
-#   depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
+  depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
+}
+
+data "google_project" "project" {
+}
+
+resource "google_project_iam_member" "viewer" {
+  project = data.google_project.project.project_id
+  role   = "roles/bigquery.metadataViewer"
+  member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+}
+
+resource "google_project_iam_member" "editor" {
+  project = data.google_project.project.project_id
+  role   = "roles/bigquery.dataEditor"
+  member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
 
 
