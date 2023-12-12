@@ -30,7 +30,7 @@ resource "google_pubsub_subscription" "pageviews" {
 
 
 resource "google_bigquery_dataset" "default" {
-  dataset_id                  = "the-maze-go"
+  dataset_id                  = "the_maze_go"
   friendly_name               = "maze-data"
   description                 = "Dataset for logging page views and movie actions"
   location                    = "europe-north1"
