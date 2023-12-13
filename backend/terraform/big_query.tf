@@ -1,21 +1,33 @@
-resource "google_pubsub_schema" "movies" {
-  name = "movies"
+resource "google_pubsub_schema" "movies_schema" {
+  name = "pubsub-movies-schema"
   type = "PROTOCOL_BUFFER"
   definition = "syntax = \"proto3\";\nmessage Results {\nstring title = 1;\nstring date = 2;\nstring data = 3;\n}"
 }
 
-resource "google_pubsub_schema" "pageviews" {
-  name = "example"
+resource "google_pubsub_schema" "pageviews_schema" {
+  name = "pubsub-pageviews-schema"
   type = "PROTOCOL_BUFFER"
   definition = "syntax = \"proto3\";\nmessage Results {\nstring path = 1;\nstring userAgent = 2;\nstring date = 3;\nstring data = 4;\n}"
 }
 
 resource "google_pubsub_topic" "movies" {
   name = "movie-topic"
+
+  depends_on = [google_pubsub_schema.movies_schema]
+  schema_settings {
+    schema = "projects/${var.projectID}/schemas/${google_pubsub_schema.movies_schema.name}"
+    encoding = "JSON"
+  }
 }
 
 resource "google_pubsub_topic" "pageviews" {
   name = "pageview-topic"
+
+  depends_on = [google_pubsub_schema.pageviews_schema]
+  schema_settings {
+    schema = "projects/${var.projectID}/schemas/${google_pubsub_schema.pageviews_schema.name}"
+    encoding = "JSON"
+  }
 }
 
 resource "google_pubsub_subscription" "movies" {
