@@ -1,13 +1,13 @@
 resource "google_pubsub_schema" "movies_schema" {
   name = "pubsub-movies-schema"
   type = "PROTOCOL_BUFFER"
-  definition = "syntax = \"proto3\";\nmessage Results {\nstring title = 1;\nstring date = 2;\nstring data = 3;\n}"
+  definition = "syntax = \"proto3\";\nmessage Results {\nstring title = 1;\ntimestamp date = 2;\nstring data = 3;\n}"
 }
 
 resource "google_pubsub_schema" "pageviews_schema" {
   name = "pubsub-pageviews-schema"
   type = "PROTOCOL_BUFFER"
-  definition = "syntax = \"proto3\";\nmessage Results {\nstring path = 1;\nstring userAgent = 2;\nstring date = 3;\nstring data = 4;\n}"
+  definition = "syntax = \"proto3\";\nmessage Results {\nstring path = 1;\nstring userAgent = 2;\ntimestamp date = 3;\nstring data = 4;\n}"
 }
 
 resource "google_pubsub_topic" "movies_topic" {
@@ -91,7 +91,7 @@ resource "google_bigquery_table" "movies" {
   },
   {
     "name": "date",
-    "type": "STRING",
+    "type": "TIMESTAMP",
     "mode": "REQUIRED",
     "description": "Date when movie was added"
   },
@@ -126,7 +126,7 @@ resource "google_bigquery_table" "pageviews" {
   },
   {
     "name": "date",
-    "type": "STRING",
+    "type": "TIMESTAMP",
     "mode": "REQUIRED",
     "description": "Timestamp of when the page was accessed"
   },
