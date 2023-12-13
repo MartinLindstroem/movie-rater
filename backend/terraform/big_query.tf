@@ -10,7 +10,7 @@ resource "google_pubsub_schema" "pageviews_schema" {
   definition = "syntax = \"proto3\";\nmessage Results {\nstring path = 1;\nstring userAgent = 2;\nstring date = 3;\nstring data = 4;\n}"
 }
 
-resource "google_pubsub_topic" "movies" {
+resource "google_pubsub_topic" "movies_topic" {
   name = "movie-topic"
 
   depends_on = [google_pubsub_schema.movies_schema]
@@ -20,7 +20,7 @@ resource "google_pubsub_topic" "movies" {
   }
 }
 
-resource "google_pubsub_topic" "pageviews" {
+resource "google_pubsub_topic" "pageviews_topic" {
   name = "pageview-topic"
 
   depends_on = [google_pubsub_schema.pageviews_schema]
@@ -30,9 +30,9 @@ resource "google_pubsub_topic" "pageviews" {
   }
 }
 
-resource "google_pubsub_subscription" "movies" {
+resource "google_pubsub_subscription" "movies_sub" {
   name  = "movies-subscription"
-  topic = google_pubsub_topic.movies.name
+  topic = google_pubsub_topic.movies_topic.name
 
   bigquery_config {
     table = "${google_bigquery_table.movies.project}.${google_bigquery_table.movies.dataset_id}.${google_bigquery_table.movies.table_id}"
@@ -42,9 +42,9 @@ resource "google_pubsub_subscription" "movies" {
   depends_on = [google_project_iam_member.editor]
 }
 
-resource "google_pubsub_subscription" "pageviews" {
+resource "google_pubsub_subscription" "pageviews_sub" {
   name  = "pageviews-subscription"
-  topic = google_pubsub_topic.pageviews.name
+  topic = google_pubsub_topic.pageviews_topic.name
 
   bigquery_config {
     table = "${google_bigquery_table.pageviews.project}.${google_bigquery_table.pageviews.dataset_id}.${google_bigquery_table.pageviews.table_id}"
@@ -91,7 +91,7 @@ resource "google_bigquery_table" "movies" {
   },
   {
     "name": "date",
-    "type": "TIMESTAMP",
+    "type": "STRING",
     "mode": "REQUIRED",
     "description": "Date when movie was added"
   },
@@ -126,7 +126,7 @@ resource "google_bigquery_table" "pageviews" {
   },
   {
     "name": "date",
-    "type": "TIMESTAMP",
+    "type": "STRING",
     "mode": "REQUIRED",
     "description": "Timestamp of when the page was accessed"
   },
