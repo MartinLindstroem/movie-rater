@@ -80,6 +80,7 @@ resource "google_bigquery_dataset" "default" {
 resource "google_bigquery_table" "movies" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "movies"
+  deletion_protection = false
 
   schema = <<EOF
 [
@@ -103,6 +104,7 @@ EOF
 resource "google_bigquery_table" "pageviews" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "page-views"
+  deletion_protection = false
 
   schema = <<EOF
 [
