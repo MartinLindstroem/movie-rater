@@ -70,6 +70,12 @@ resource "google_bigquery_table" "movies" {
     "type": "TIMESTAMP",
     "mode": "REQUIRED",
     "description": "Date when movie was added"
+  },
+  {
+    "name": "data",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "TEST TO GET RID OF ERROR"
   }
 ]
 EOF
@@ -99,6 +105,12 @@ resource "google_bigquery_table" "pageviews" {
     "type": "TIMESTAMP",
     "mode": "REQUIRED",
     "description": "Timestamp of when the page was accessed"
+  },
+  {
+    "name": "data",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "TEST TO GET RID OF ERROR"
   }
 ]
 EOF
