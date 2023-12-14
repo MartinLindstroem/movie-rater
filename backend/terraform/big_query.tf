@@ -1,33 +1,33 @@
-# resource "google_pubsub_schema" "movies_schema" {
-#   name = "pubsub-movies-schema"
-#   type = "PROTOCOL_BUFFER"
-#   definition = "syntax = \"proto3\";\nmessage Results {\nstring title = 1;\nstring date = 2;\nstring data = 3;\n}"
-# }
+resource "google_pubsub_schema" "movies_schema" {
+  name = "pubsub-movies-schema"
+  type = "PROTOCOL_BUFFER"
+  definition = "syntax = \"proto2\";\nmessage Results {\n \"required\" string title = 1;\n \"required\" string date = 2;\nstring data = 3;\n}"
+}
 
-# resource "google_pubsub_schema" "pageviews_schema" {
-#   name = "pubsub-pageviews-schema"
-#   type = "PROTOCOL_BUFFER"
-#   definition = "syntax = \"proto3\";\nmessage Results {\nstring path = 1;\nstring userAgent = 2;\nstring date = 3;\nstring data = 4;\n}"
-# }
+resource "google_pubsub_schema" "pageviews_schema" {
+  name = "pubsub-pageviews-schema"
+  type = "PROTOCOL_BUFFER"
+  definition = "syntax = \"proto2\";\nmessage Results {\n \"required\" string path = 1;\n \"required\" string userAgent = 2;\n \"required\" string date = 3;\nstring data = 4;\n}"
+}
 
 resource "google_pubsub_topic" "movies_topic" {
   name = "movie-topic"
 
-  # depends_on = [google_pubsub_schema.movies_schema]
-  # schema_settings {
-  #   schema = "projects/${var.projectID}/schemas/${google_pubsub_schema.movies_schema.name}"
-  #   encoding = "JSON"
-  # }
+  depends_on = [google_pubsub_schema.movies_schema]
+  schema_settings {
+    schema = "projects/${var.projectID}/schemas/${google_pubsub_schema.movies_schema.name}"
+    encoding = "JSON"
+  }
 }
 
 resource "google_pubsub_topic" "pageviews_topic" {
   name = "pageview-topic"
 
-  # depends_on = [google_pubsub_schema.pageviews_schema]
-  # schema_settings {
-  #   schema = "projects/${var.projectID}/schemas/${google_pubsub_schema.pageviews_schema.name}"
-  #   encoding = "JSON"
-  # }
+  depends_on = [google_pubsub_schema.pageviews_schema]
+  schema_settings {
+    schema = "projects/${var.projectID}/schemas/${google_pubsub_schema.pageviews_schema.name}"
+    encoding = "JSON"
+  }
 }
 
 resource "google_pubsub_subscription" "movies_sub" {
@@ -95,6 +95,12 @@ resource "google_bigquery_table" "movies" {
     "type": "TIMESTAMP",
     "mode": "REQUIRED",
     "description": "Date when movie was added"
+  },
+  {
+    "name": "data",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "TEST TO GET RID OF ERROR"
   }
 ]
 EOF
@@ -125,6 +131,12 @@ resource "google_bigquery_table" "pageviews" {
     "type": "TIMESTAMP",
     "mode": "REQUIRED",
     "description": "Timestamp of when the page was accessed"
+  },
+  {
+    "name": "data",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "TEST TO GET RID OF ERROR"
   }
 ]
 EOF
