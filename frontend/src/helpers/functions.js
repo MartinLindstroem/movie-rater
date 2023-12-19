@@ -3,9 +3,6 @@ if (process.env.NODE_ENV === "development") {
   url = "http://localhost:8080/v1";
 }
 
-console.log(url);
-console.log(process.env);
-
 export const helperFunctions = {
   // Get all movies from the database
   fetchMovies: async () => {
@@ -29,10 +26,10 @@ export const helperFunctions = {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success: ", data);
+        return data;
       })
       .catch((error) => {
-        console.error("Error: ", error);
+        return error;
       });
   },
 
@@ -47,7 +44,7 @@ export const helperFunctions = {
     })
       .then((response) => response.json())
       .catch((error) => {
-        console.error("Error: ", error);
+        return error;
       });
   },
   // Delete movie from database
@@ -66,7 +63,7 @@ export const helperFunctions = {
     })
       .then((response) => response.json())
       .catch((error) => {
-        console.error("Error: ", error);
+        return error;
       });
   },
   // rate a single movie
@@ -80,10 +77,10 @@ export const helperFunctions = {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("msg: ", data);
+        return data;
       })
       .catch((error) => {
-        console.error("Error: ", error);
+        return error;
       });
   },
   // Register a new user
@@ -102,11 +99,10 @@ export const helperFunctions = {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success: ", data);
         return data;
       })
       .catch((error) => {
-        console.error("Error: ", error);
+        return error;
       });
   },
   // Log in user
@@ -134,7 +130,7 @@ export const helperFunctions = {
         return data;
       })
       .catch((error) => {
-        console.error("Error: ", error);
+        return error;
       });
   },
   // Log out user. Removes cookie with token
@@ -161,20 +157,20 @@ export const helperFunctions = {
   //       console.error("Error: ", error);
   //     });
   // },
-  // pageViews: async (data) => {
-  //   await fetch(`${url}/page-view`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("Success: ", data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error: ", error);
-  //     });
-  // },
+  pageViews: async (data) => {
+    await fetch(`${url}/pageviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success: ", data);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  },
 };

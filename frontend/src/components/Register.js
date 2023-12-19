@@ -19,9 +19,9 @@ const Register = ({ incrementPageViews }) => {
   const [statusMessage, setStatusMessage] = useState("");
   const [severity, setSeverity] = useState("");
 
-  // useEffect(() => {
-  //   incrementPageViews();
-  // }, []);
+  useEffect(() => {
+    incrementPageViews();
+  }, []);
 
   const onClick = async () => {
     if (email === "" || password === "") {

@@ -22,9 +22,9 @@ function AdminPage({ logout, incrementPageViews }) {
     getMovies();
   }, []);
 
-  // useEffect(() => {
-  //   incrementPageViews();
-  // }, []);
+  useEffect(() => {
+    incrementPageViews();
+  }, []);
 
   const toggleForm = (id, title, imdb, image, rating, count) => {
     const movie = { id, title, imdb, image, rating, count };

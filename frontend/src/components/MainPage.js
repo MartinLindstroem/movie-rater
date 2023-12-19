@@ -4,8 +4,6 @@ import MovieTable from "./MovieTable";
 import AddMovie from "./AddMovie";
 import Button from "@mui/material/Button";
 import { helperFunctions } from "../helpers/functions";
-// const url = "https://the-maze-backend-jxbccvuzla-lz.a.run.app/movies";
-// const url = "http://localhost:8080/movies";
 
 function MainPage({ incrementPageViews }) {
   const [movies, setMovies] = useState([]);
@@ -20,10 +18,10 @@ function MainPage({ incrementPageViews }) {
     getMovies();
   }, []);
 
-  // // Update the page views everytime the component renders
-  // useEffect(() => {
-  //   incrementPageViews();
-  // }, []);
+  // Update the page views everytime the component renders
+  useEffect(() => {
+    incrementPageViews();
+  }, []);
 
   const toggleForm = () => {
     setShowAddMovie(!showAddMovie);
