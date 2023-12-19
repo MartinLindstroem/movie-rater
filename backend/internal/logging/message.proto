@@ -1,0 +1,15 @@
+syntax = "proto2";
+package logging;
+
+option go_package = "./proto";
+
+message MovieMessage {
+    required string title = 1;
+    required string date = 2;
+}
+
+message PageviewsMessage {
+    required string path = 1;
+    required string userAgent = 2;
+    required string date = 3;
+}
