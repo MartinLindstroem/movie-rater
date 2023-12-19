@@ -47,9 +47,17 @@ resource "google_pubsub_topic" "pageviews_topic" {
   }
 }
 
+resource "google_pubsub_topic" "movies_dead_letter_topic" {
+  name = "movie-topic-dead-letter"
+}
+
 resource "google_pubsub_subscription" "movies_sub" {
   name  = "movies-subscription"
   topic = google_pubsub_topic.movies_topic.name
+  dead_letter_policy {
+    dead_letter_topic = google_pubsub_topic.movies_dead_letter_topic.id
+    max_delivery_attempts = 10
+  }
 
   bigquery_config {
     table = "${google_bigquery_table.movies.project}.${google_bigquery_table.movies.dataset_id}.${google_bigquery_table.movies.table_id}"
@@ -69,6 +77,12 @@ resource "google_pubsub_subscription" "pageviews_sub" {
   }
 
   depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
+}
+
+resource "google_pubsub_subscription" "movies_dead_letter_sub" {
+  name = "movies-dead-letter-subscription"
+  topic = google_pubsub_topic.movies_dead_letter_topic.name
+  
 }
 
 data "google_project" "project" {
