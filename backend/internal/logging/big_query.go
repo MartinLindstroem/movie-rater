@@ -97,7 +97,7 @@ func PublishTopic(w io.Writer, topic string, data types.TopicMessage) error {
 		return fmt.Errorf("result.Get: %w", err)
 	}
 	fmt.Fprintf(w, "Published proto message with %#v encoding: %s\n", encoding, string(msg))
-	log.Printf("LOG: Published proto message with %#v encoding: %s\n", encoding, string(msg))
+	// log.Printf("LOG: Published proto message with %#v encoding: %s\n", encoding, string(msg))
 	return nil
 
 }
