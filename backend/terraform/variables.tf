@@ -13,3 +13,9 @@ variable "github_sha" {
     description = "github sha for image tag"
     sensitive = true
 }
+
+variable "jwt_secret" {
+  type = string
+  description = "jwt secret for signing tokens"
+  sensitive = true
+}
