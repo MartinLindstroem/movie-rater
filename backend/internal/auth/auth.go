@@ -16,7 +16,6 @@ var jwtKey []byte
 
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	fmt.Println(string(bytes), err)
 	return string(bytes), err
 }
 
@@ -28,7 +27,6 @@ func CheckPasswordHash(password, hash string) error {
 func CreateJwtToken(username string) (string, error) {
 	secretKey = os.Getenv("JWT_SECRET")
 	jwtKey = []byte(secretKey)
-	log.Printf("JWT secret is %v", secretKey)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
