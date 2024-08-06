@@ -1,90 +1,47 @@
-# The maze with Go
+# What does this system do (in summary)
 
-## Security Considerations
+**Who would use it and for what**
 
-This section will cover this applications vulnerabilities and/or mitigations against [OWASP Top 10 vulnerabilities](https://owasp.org/www-project-top-ten/).
+The purpose of the application is to rate movies.
 
-### Broken Access Control
+**Who built it**
 
-[Broken Access Control on OWASP](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
+Martin Lindström
 
-The application is vulnerable to broken access control for the following reasons:
+**Why did you build it**
 
-- ~~CORS currently allows API access from any origin.~~
+The application was built as an exercise to get familiar with the Go programming langauge as well as GitHub Actions and Terraform.
 
-_Fixed_:
-_Added cors-origin to only accept requests from the frontend application_
+## Architecture
 
-### Cryptographic Failures
+The frontend of the application is built with React, the backend API is built with Go and the database being used is Firestore Database.
 
-[Cryptographic Failures on OWASP](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/)
+The application also uses a pubsub->bigquery flow to track pageviews and added movies.
 
-The application is **not** vulnerable to cryptographic failures for the following reasons:
+There is a CI/CD pipeline which consists of GitHub Actions and Terraform that builds the container images for the frontend and the backend and deploys them to two cloud run instances when new code is pushed to the repository.
 
-- The passwords are hashed and salted with bcrypt before being stored in the database.
+## Views
 
-### Injection
+Cloud view
 
-[Injection on OWASP](https://owasp.org/Top10/A03_2021-Injection/)
+![Cloud diagram](./frontend/public/cloud-diagram-updated.drawio.png)
 
-The application is **not** vulnerable to injections for the following reasons:
+Deployment view (from devs computer, how does code move to production)
 
-- It uses firestores API to interact with the firestore database.
-- JSX prevents injection attacks by escaping any values before rendering them.
+![Deployment diagram](./frontend/public/deployment-diagram.drawio.png)
 
-### Insecure Design
+Front end (what does the user see)
 
-[Insecure design on OWASP](https://owasp.org/Top10/A04_2021-Insecure_Design/)
+![Website screenshot](./frontend/public/screenshot-main.png)
 
-The application contains some vulnerabilities as a result of an insecure design:
+![Add movie](./frontend/public/screenshot-add.png)
 
-- No checks on who has rated which movies, meaning any user can rate the same movie several times.
-- No unit or integration tests have been written.
+![Login](./frontend/public/screenshot-login.png)
 
-### Security Misconfiguration
+## Security
 
-[Security Misconfiguration on OWASP](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
+**What type of data do we store**
 
-The application contains some vulnerabilities as a result of security misconfigurations:
+The data stored for the movies is insensitive data such as id, title, imdb-link, image-link and rating.
 
-- The database does not have any permission rules set
-- ~~No security headers set by the server~~
-
-_Fixed_: _Security headers set_
-
-### Vulnerable and Outdated Components
-
-[Vulnerable and Outdated Components on OWASP](https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/)
-
-The application does **not** contain any vulnerable or outdated components (to my knowledge).
-
-### Identification and Authentication Failures
-
-[Identification and Authentication Failures on OWASP](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)
-
-The application does contain identification or authentication failure related vulnerabilities for the following reasons:
-
-- The application allows users to use weak passwords.
-- The application does not invalidate tokens on logout.
-
-### Software and Data Integrity Failures
-
-[Software and Data Integrity Failures on OWASP](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/)
-
-N/A
-
-### Security Logging and Monitoring Failures
-
-[Security Logging and Monitoring Failures on OWASP](https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/)
-
-The application has vulnerabilities related to security logging and monitoring for the following reasons:
-
-- There is no logging or monitoring of the application.
-
-### Server-Side Request Forgery (SSRF)
-
-[Server-Side Request Forgery on OWASP](https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/)
-
-The application is **not** vulnerable to SSRF due to the following reason:
-
-- The server does not make any outgoing requests.
+The data stored for the users contain sensitive data such as registered users email and password. The password is hashed and salted before being stored in the database.
